@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <title>Music Vibes</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+
+<header>
+  <h1>🎧 Music Vibes</h1>
+  <p>Scopri, ascolta e vibra con la musica</p>
+</header>
+<link rel="stylesheet" href="css/style.css">
+<main>
+
+  <div class="card">
+    <h2>Player musicale</h2>
+
+    <div class="player">
+      <div class="song-info">
+        <h3 id="song-title">Nessun brano</h3>
+        <p id="song-artist">Seleziona una canzone</p>
+      </div>
+
+      <div class="controls">
+        <button onclick="playPause()">▶ / ⏸</button>
+        <button onclick="stopSong()">⏹</button>
+      </div>
+    </div>
+
+    <audio id="audio"></audio>
+    <!-- Immagine grande del cantante -->
+    <img id="bigArtistImg">
+  </div>
+
+  <div class="card">
+    <h2>Playlist</h2>
+    <ul class="playlist" id="playlist">
+      <li onclick="loadSong(0)"><img src="img/djo.jpg" alt="DJO"><span>🎵 End of Beginning - DJO</span></li>
+      <li onclick="loadSong(1)"><img src="img/tonypitony.jpg" alt="TONYPITONY"><span>🎵 Donne Ricche - TONYPITONY</span></li>
+      <li onclick="loadSong(2)"><img src="img/alfa.jpg" alt="Alfa"><span>🎵 5 MINUTI - Alfa</span></li>
+    </ul>
+  </div>
+
+</main>
+
+<footer>
+  © 2026 Music Vibes
+</footer>
+
+<script>
+const songs = [
+  { title: "End of Beginning", artist: "DJO", src: "musica/Djo - End Of Beginning (Lyrics).mp3" },
+  { title: "Donne Ricche", artist: "TONYPITONY", src: "musica/TONYPITONY - Donne Ricche (Acoustic Version)(TestoLyrics).mp3" },
+  { title: "5 MINUTI", artist: "Alfa", src: "musica/Alfa - 5 minuti (testo).mp3" }
+];
+
+const audio = document.getElementById("audio");
+const title = document.getElementById("song-title");
+const artist = document.getElementById("song-artist");
+const playlistItems = document.querySelectorAll(".playlist li");
+const bigImg = document.getElementById("bigArtistImg");
+
+let isPlaying = false;
+let currentIndex = null;
+
+function loadSong(index) {
+  audio.src = songs[index].src;
+  title.textContent = songs[index].title;
+  artist.textContent = songs[index].artist;
+  audio.play();
+  isPlaying = true;
+  currentIndex = index;
+
+  // evidenzia canzone selezionata
+  playlistItems.forEach(li => li.classList.remove("active"));
+  playlistItems[index].classList.add("active");
+
+  // mostra immagine grande del cantante con animazione
+  let imgSrc = "";
+  switch(songs[index].artist) {
+    case "DJO": imgSrc = "img/djo.jpg"; break;
+    case "TONYPITONY": imgSrc = "img/tonypitony.jpg"; break;
+    case "Alfa": imgSrc = "img/alfa.jpg"; break;
+  }
+  bigImg.src = imgSrc;
+  bigImg.classList.remove("show", "animate");
+  setTimeout(() => {
+    bigImg.classList.add("show");
+    bigImg.classList.add("animate");
+  }, 100);
+}
+
+function playPause() {
+  if (!audio.src) return;
+  if (isPlaying) audio.pause();
+  else audio.play();
+  isPlaying = !isPlaying;
+}
+
+function stopSong() {
+  audio.pause();
+  audio.currentTime = 0;
+  isPlaying = false;
+}
+</script>
+
+</body>
+</html>
